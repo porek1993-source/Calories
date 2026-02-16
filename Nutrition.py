@@ -12,7 +12,7 @@ APP_VERSION = "v2.0 - Deep Reasoning"
 
 # Pokud máš přístup, zkus "gemini-1.5-pro" (je chytřejší na detekci jídla).
 # "gemini-2.5-flash-lite" je rychlý, ale může přehlédnout detaily.
-GEMINI_MODEL = "gemini-1.5-flash" 
+GEMINI_MODEL = "gemini-2.5-flash-lite" 
 
 def _get_secret(name: str, default: str = "") -> str:
     try:
