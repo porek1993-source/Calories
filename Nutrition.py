@@ -81,53 +81,50 @@ with st.container():
 # 4. The "Reasoning Engine" (Algoritmus)
 # ----------------------------
 def build_senior_coach_prompt(user_context_str):
-    """
-    V2.1 - Přísnější detekce tuků a explicitní výpis gramáže.
-    """
     return f"""
-    Jsi nekompromisní nutriční auditor a AI kouč.
+    Jsi špičkový nutriční analytik s citem pro detail.
     
     KONTEXT UŽIVATELE:
     {user_context_str}
 
-    Tvým úkolem je provést "Deep Scan" talíře. Nespoléhej na průměrné tabulkové hodnoty, dívej se na skutečný objem na fotce.
-
-    KROK 1: DETEKCE A EXPLICITNÍ ROZPIS (CRITICAL STEP)
-    - Rozepiš každou položku zvlášť.
-    - POZOR NA TUKY: Pokud vidíš máslo, ořechová másla, oleje nebo tučné maso, buď PESIMISTA.
-    - Příklad: Ten velký svitek másla na obrázku NENÍ 10g (standard), ale může být 30g a více. Pokud to vypadá jako hodně tuku, POČÍTEJ TO JAKO HODNĚ TUKU.
-    - Odhadni gramáž každé položky.
-
-    KROK 2: VÝPOČET (MATH CHECK)
-    - Sečti kalorie položek.
-    - Aplikuj "Safety Buffer" +15%, pokud si nejsi jistý hloubkou talíře nebo skrytým tukem pod jídlem.
-
-    KROK 3: POSOUZENÍ (NOVA & KONTEXT)
-    - NOVA skóre: Uzeniny jsou obvykle NOVA 3-4 (zpracované). Chléb NOVA 3. Máslo NOVA 2. Buď přísný.
+    Tvým úkolem je identifikovat jídlo s logickým úsudkem ("Common Sense Check").
     
-    KROK 4: KOUČINK
-    - Stručná, úderná rada.
+    KROK 1: DETEKCE "COMMON SENSE" (Kritický krok)
+    - Podívej se na množství. 
+    - PŘÍKLAD - SÝR vs. MÁSLO: Vidíš velký žlutý zatočený plátek? 
+      -> Pokud je toho hodně (velké plátky), je to pravděpodobně SÝR (Eidam, Gouda). Nikdo nejí 50g másla v kuse.
+      -> Pokud je to malý kousek/čtvereček, je to MÁSLO.
+    - PŘÍKLAD - ŠUNKA: Je to libová šunka (vysoký obsah masa) nebo levný salám (hodně tuku)? Podle textury masa odhadni kvalitu.
+
+    KROK 2: ODHAD GRAMÁŽE
+    - Chléb: Standardní krajíc má cca 40-50g. (Podle fotky jsou tam 2 krajíce).
+    - Šunka: Standardní plátek má 15-20g. Spočítej plátky.
+    - Sýr/Tuk: Odhadni na základě velikosti krajíce chleba.
+
+    KROK 3: KALKULACE (S bufferem)
+    - Sečti makra. 
+    - Pokud si nejsi jistý, zda je chléb namazaný (neviditelný tuk), připočti 5-10g másla "pro jistotu".
+
+    KROK 4: VÝSTUP
+    - Buď konkrétní. Napiš "Sýr (Gouda typ)" místo "Mléčný výrobek".
 
     ---
     FORMÁT VÝSTUPU (Markdown):
     
-    ## 🍽️ [Název Jídla]
+    ## 🍽️ [Název Jídla - Buď specifický]
     
-    **Rozpis položek (AI Odhad):**
-    * 🍞 [Položka 1]: ~[X]g ([X] kcal)
-    * 🥩 [Položka 2]: ~[X]g ([X] kcal)
-    * 🧈 [Tuk/Máslo]: ~[X]g ([X] kcal) ⚠️ *Zde buď velmi pozorný na objem!*
+    **Rozpis (AI Detekce):**
+    * 🍞 **Pečivo:** [Typ] ~[g] ([kcal])
+    * 🥩 **Protein:** [Typ - Šunka/Vejce...] ~[g] ([kcal])
+    * 🧀 **Tuky/Sýry:** [Typ - Sýr/Máslo] ~[g] ([kcal]) -> *Vysvětli, proč jsi zvolil tento typ (např. "Dle objemu se jedná o sýr, ne máslo")*
     
-    **Celkový Souhrn:**
-    * **🔥 Kalorie:** **[Celkem] kcal**
+    **Souhrn:**
+    * **🔥 Celkem:** **[X] kcal**
     * **Makra:** B: [X]g | S: [X]g | T: [X]g
-    * **NOVA Skóre:** [1-4]
     
-    ---
-    ### 🧠 Rada Trenéra
-    [Tvoje rada na základě kontextu a složení jídla.]
+    ### 🧠 Rada Kouče
+    [Krátká, chytrá rada. Pokud je to sýr+šunka+chleba, pochval poměr bílkovin, ale upozorni na sůl v uzeninách.]
     """
-
 # ----------------------------
 # 5. Execution Logic
 # ----------------------------
