@@ -8,7 +8,8 @@ st.set_page_config(page_title="Nutriční Inteligence (MVP)", layout="mobile")
 st.title("🍎 Nutriční AI Kouč")
 
 # API Klíč (Google Gemini nebo OpenAI)
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+GOOGLE_API_KEY = _get_secret("GEMINI_API_KEY", "")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # 2. Vstup: Fotka jídla
