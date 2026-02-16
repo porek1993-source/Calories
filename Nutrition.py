@@ -6,7 +6,7 @@ import google.generativeai as genai
 
 # --- CONFIG ---
 APP_NAME = "Nutriční Inteligence (v3.0)"
-GEMINI_MODEL = "gemini-1.5-flash" # Flash je rychlý a levný, pro přesnost zkus 'gemini-1.5-pro'
+GEMINI_MODEL = "gemini-2.5-flash-lite" # Flash je rychlý a levný, pro přesnost zkus 'gemini-1.5-pro'
 
 def _get_secret(name, default=""):
     try:
@@ -22,7 +22,7 @@ if not GEMINI_API_KEY:
 genai.configure(api_key=GEMINI_API_KEY)
 
 # --- UI SETUP ---
-st.set_page_config(page_title=APP_NAME, layout="mobile") # Zkusíme mobile layout
+st.set_page_config(page_title=APP_NAME, layout="centered") # Zkusíme mobile layout
 st.markdown("""
     <style>
         .stButton>button { width: 100%; border-radius: 12px; height: 3rem; background-color: #FF4B4B; color: white; }
